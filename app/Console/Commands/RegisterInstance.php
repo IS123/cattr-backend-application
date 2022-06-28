@@ -43,21 +43,22 @@ class RegisterInstance extends Command
         try {
             $appVersion = config('app.version');
 
-            $response = $client->post(config('app.stats_collector_url') . '/instance', [
-                'json' => [
-                    'ownerEmail' => $this->argument('adminEmail'),
-                    'version' => $appVersion,
-                    'modules' => ModuleHelper::getModulesInfo(),
-                    'image' => getenv('IMAGE_VERSION')
-                ]
-            ]);
-
-            $responseBody = json_decode(
-                $response->getBody()->getContents(),
-                true,
-                512,
-                JSON_THROW_ON_ERROR | JSON_THROW_ON_ERROR
-            );
+            // $response = $client->post(config('app.stats_collector_url') . '/instance', [
+            //     'json' => [
+            //         'ownerEmail' => $this->argument('adminEmail'),
+            //         'version' => $appVersion,
+            //         'modules' => ModuleHelper::getModulesInfo(),
+            //         'image' => getenv('IMAGE_VERSION')
+            //     ]
+            // ]);
+            //
+            // $responseBody = json_decode(
+            //     $response->getBody()->getContents(),
+            //     true,
+            //     512,
+            //     JSON_THROW_ON_ERROR | JSON_THROW_ON_ERROR
+            // );
+            $responseBody['instanceId'] = 'CE23D532';
 
             if (isset($responseBody['instanceId'])) {
                 Settings::scope('core')->set('instance', $responseBody['instanceId']);
